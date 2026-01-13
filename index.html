@@ -1,0 +1,144 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web Tuner + Tone Keyboard (Minimal, Extensible)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Web Tuner</h1>
+      <p class="sub">単体チューナー + 鍵盤発音（将来Discord Activity拡張前提）</p>
+    </header>
+
+    <section class="controls card">
+      <div class="row">
+        <button id="btnStart" class="btn primary">Start</button>
+        <button id="btnStop" class="btn" disabled>Stop</button>
+
+        <label class="select-wrap" title="A4基準周波数（チューナー/発音で共通）">
+          <span class="label">A4</span>
+          <select id="a4Select">
+            <option value="440" selected>440 Hz</option>
+            <option value="442">442 Hz</option>
+          </select>
+        </label>
+
+        <span id="status" class="status idle">Idle</span>
+      </div>
+
+      <div class="hint">
+        ※ マイクは <code>file://</code> では動かないことが多いので、<code>http://localhost</code> で開いてください。<br>
+        ※ 発音（出力）をスピーカーで鳴らすと、マイク（入力）が拾ってチューナーが影響を受けます。可能なら<strong>イヤホン推奨</strong>。
+      </div>
+    </section>
+
+    <section class="readouts card">
+      <div class="grid">
+        <div class="kv">
+          <div class="k">周波数</div>
+          <div class="v"><span id="hzText">—</span><span class="unit">Hz</span></div>
+        </div>
+        <div class="kv">
+          <div class="k">ノート</div>
+          <div class="v"><span id="noteText">—</span></div>
+        </div>
+        <div class="kv">
+          <div class="k">Cent</div>
+          <div class="v"><span id="centText">—</span><span class="unit">c</span></div>
+        </div>
+        <div class="kv">
+          <div class="k">信頼度</div>
+          <div class="v"><span id="confText">—</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="meter card">
+      <div class="meter-title">
+        <div>チューナー針</div>
+        <div id="detectText" class="detect">検出中…</div>
+      </div>
+
+      <div class="needle-wrap" aria-label="tuner needle">
+        <div class="ticks">
+          <span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span>
+        </div>
+        <div class="track">
+          <div class="center-line"></div>
+          <div id="needle" class="needle" style="transform: translateX(0px);"></div>
+          <div id="inTune" class="in-tune"></div>
+        </div>
+      </div>
+
+      <div class="levels">
+        <div class="level">
+          <div class="k">入力レベル</div>
+          <div class="bar">
+            <div id="levelBar" class="bar-fill" style="width: 0%;"></div>
+          </div>
+          <div id="levelText" class="small">— dB</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 追加：発音コントロール＆鍵盤 -->
+    <section class="tone card">
+      <div class="tone-head">
+        <h2 class="tone-title">Tone / Practice</h2>
+
+        <div class="tone-controls">
+          <label class="select-wrap" title="発音ソース切替（将来Sample再生に拡張）">
+            <span class="label">Sound Source</span>
+            <select id="sourceSelect">
+              <option value="osc" selected>Oscillator</option>
+              <option value="sample">Sample (dummy)</option>
+            </select>
+          </label>
+
+          <label class="select-wrap" title="波形（Oscillatorのみ）">
+            <span class="label">Wave</span>
+            <select id="waveSelect">
+              <option value="sine" selected>sine</option>
+              <option value="triangle">triangle</option>
+              <option value="square">square</option>
+              <option value="sawtooth">sawtooth</option>
+            </select>
+          </label>
+
+          <label class="select-wrap" title="発音音量（出力）">
+            <span class="label">Vol</span>
+            <input id="toneVol" type="range" min="0" max="1" step="0.01" value="0.25" />
+          </label>
+        </div>
+      </div>
+
+      <!-- 追加：鳴っている音名を大きく表示（TunerUIとは別で干渉しない） -->
+      <div id="playDisplay" class="play-display is-off" aria-label="playing note display">
+        ——
+      </div>
+
+      <!-- 追加：2オクターブ鍵盤（レンジはチューナー用途向けに C3〜B4 を採用） -->
+      <div class="keyboard-wrap">
+        <div class="keyboard-caption">
+          クリック/タッチで発音（押している間だけ鳴る）｜レンジ：C3〜B4（ギター/声の練習に使いやすい）
+        </div>
+        <div id="keyboard" class="keyboard" aria-label="piano keyboard"></div>
+      </div>
+
+      <div class="hint">
+        ※ ここは「基準音・練習用」の出力です。チューナーは常にマイク入力を測ります（別系統）。
+      </div>
+    </section>
+
+    <footer class="footer">
+      <small>Web Audio API / YIN-like pitch detection / No external libs</small>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

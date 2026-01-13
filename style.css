@@ -1,0 +1,379 @@
+/* style.css */
+:root{
+  --bg:#0b0d12;
+  --card:#121624;
+  --muted:#9aa3b2;
+  --text:#e9eef7;
+  --accent:#7c5cff;
+  --ok:#37d67a;
+  --warn:#ffcc66;
+  --bad:#ff5c7a;
+  --line:#2a3147;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:radial-gradient(1200px 700px at 30% 0%, #172046 0%, var(--bg) 55%);
+  color:var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", sans-serif;
+}
+
+.app{
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.header h1{
+  margin:0;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+}
+.sub{
+  margin:6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card{
+  background: rgba(18,22,36,0.85);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 14px 14px;
+  margin-top: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.row{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+.btn{
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor:pointer;
+  user-select:none;
+}
+.btn:disabled{
+  opacity:0.45;
+  cursor:not-allowed;
+}
+.btn.primary{
+  background: linear-gradient(180deg, rgba(124,92,255,0.95), rgba(124,92,255,0.55));
+  border-color: rgba(124,92,255,0.6);
+}
+
+.select-wrap{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 10px;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+}
+.select-wrap .label{
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+select{
+  background: transparent;
+  color: var(--text);
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* range inputはOS差が大きいので最小限 */
+input[type="range"]{
+  width: 140px;
+}
+
+.status{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--muted);
+}
+.status.running{ color: var(--ok); border-color: rgba(55,214,122,0.4); }
+.status.error{ color: var(--bad); border-color: rgba(255,92,122,0.4); }
+.status.idle{ color: var(--muted); }
+
+.hint{
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+code{
+  background: rgba(255,255,255,0.06);
+  padding: 1px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+@media (max-width: 720px){
+  .grid{ grid-template-columns: repeat(2, 1fr); }
+}
+
+.kv .k{
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.kv .v{
+  font-size: 22px;
+  font-weight: 650;
+  display:flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.unit{
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.meter-title{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.detect{
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.needle-wrap{
+  width: 100%;
+}
+.ticks{
+  display:flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 6px;
+  padding: 0 4px;
+}
+
+.track{
+  position: relative;
+  height: 34px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(255,92,122,0.18), rgba(255,204,102,0.18), rgba(55,214,122,0.18), rgba(255,204,102,0.18), rgba(255,92,122,0.18));
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+.center-line{
+  position:absolute;
+  left:50%;
+  top:0;
+  width:2px;
+  height:100%;
+  background: rgba(255,255,255,0.22);
+}
+
+.needle{
+  position:absolute;
+  top: 3px;
+  left: 50%;
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+  background: rgba(233,238,247,0.95);
+  box-shadow: 0 0 18px rgba(233,238,247,0.25);
+  transform: translateX(0px);
+  will-change: transform, opacity;
+}
+
+.in-tune{
+  position:absolute;
+  top:0;
+  left:50%;
+  width: 0px;
+  height:100%;
+  background: rgba(55,214,122,0.28);
+  transform: translateX(-50%);
+  transition: width 120ms ease;
+}
+
+.levels{
+  margin-top: 12px;
+  display:flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.level .k{
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.bar{
+  width: 260px;
+  max-width: 80vw;
+  height: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  overflow:hidden;
+}
+.bar-fill{
+  height:100%;
+  background: linear-gradient(90deg, rgba(124,92,255,0.9), rgba(55,214,122,0.85));
+  width: 0%;
+  transition: width 60ms linear;
+}
+.small{
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* -----------------------
+   追加：Tone / Keyboard
+------------------------ */
+.tone-head{
+  display:flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tone-title{
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+}
+.tone-controls{
+  display:flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.play-display{
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.03);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-align: center;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+.play-display.is-off{
+  opacity: 0.25;
+  transform: translateY(0px);
+}
+.play-display.is-on{
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.keyboard-wrap{
+  margin-top: 10px;
+}
+.keyboard-caption{
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+/* 鍵盤は最小構成。2オクターブを横に並べる */
+.keyboard{
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  height: 150px;
+  user-select: none;
+  touch-action: none; /* pointerイベントでスクロール暴発を抑える */
+}
+
+/* 白鍵 */
+.key.white{
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(225,232,245,0.85));
+  border: 1px solid rgba(0,0,0,0.18);
+  box-shadow: inset 0 -8px 16px rgba(0,0,0,0.10);
+}
+.key.white:hover{
+  filter: brightness(1.02);
+}
+.key.white:active{
+  transform: translateY(1px);
+}
+
+/* 黒鍵 */
+.key.black{
+  position: absolute;
+  top: 0;
+  height: 62%;
+  border-radius: 9px;
+  background: linear-gradient(180deg, rgba(25,28,40,1), rgba(8,10,16,1));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+  z-index: 3;
+}
+.key.black:hover{
+  filter: brightness(1.06);
+}
+.key.black:active{
+  transform: translateY(1px);
+}
+
+/* 押されている状態（JSで付け外し） */
+.key.is-down{
+  outline: 2px solid rgba(124,92,255,0.75);
+  outline-offset: -2px;
+}
+
+/* ラベルは最小（ホバー/押下で分かるが、常時表示も可能） */
+.key .label{
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  font-size: 11px;
+  color: rgba(0,0,0,0.65);
+  font-weight: 650;
+  pointer-events: none;
+}
+.key.black .label{
+  color: rgba(255,255,255,0.75);
+  bottom: 6px;
+}
+
+/* モバイル向け：少し高さを抑える */
+@media (max-width: 520px){
+  .keyboard{ height: 130px; }
+  input[type="range"]{ width: 120px; }
+}
+
+.footer{
+  margin-top: 16px;
+  color: var(--muted);
+  text-align:center;
+}
